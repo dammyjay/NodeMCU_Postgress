@@ -59,7 +59,7 @@
     </style>
 </head>
 <body>
-    <h1>Live Data Table & Sensor Graph</h1>
+    <h1>EMG Live Data Table & Sensor Graph</h1>
     <div style="margin-top: 20px;">
         <button class="btn btn-dark-green" onclick="exportToExcel()">Export to Excel</button>
         <button class="btn btn-light-green" onclick="exportToPDF()">Export to PDF</button>
@@ -72,7 +72,7 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Sensor (°C)</th>
+                <th>Sensor (%)</th>
 <!--                 <th>Humidity</th> -->
                 <th>Date</th>
                 <th>Time</th>
@@ -159,7 +159,7 @@
                 type: 'indicator',
                 mode: 'gauge+number',
                 value: temperature,
-                title: { text: 'Temperature (°C)' },
+                title: { text: 'Sensor value (%)' },
                 gauge: {
                     axis: { range: [0, 100] }, // Full gauge range
                     bar: { color: barColor },
