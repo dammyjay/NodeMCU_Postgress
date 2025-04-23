@@ -90,22 +90,53 @@
             // });
 
 
-             Plotly.react('chart', [{
+            //  Plotly.react('chart', [{
+            //     type: 'indicator',
+            //     mode: 'gauge+number',
+            //     value: temperature, // Use a single value, not an array
+            //     title: { text: 'Temperature (°C)' },
+            //     gauge: {
+            //         axis: { range: [null, 100] }, // Adjust range as needed
+            //         bar: { color: 'red' },
+            //         steps: [
+            //             { range: [0, 30], color: '#d4f4fa' },
+            //             { range: [30, 60], color: '#f4e842' },
+            //             { range: [60, 100], color: '#f45b69' }
+            //         ]
+            //     }
+            // }], {
+            //     title: 'Current Temperature'
+            // });
+
+
+
+            let barColor = 'red';
+            if (temperature > 80) {
+                barColor = 'green';
+            } else if (temperature > 50) {
+                barColor = 'yellow';
+            }
+
+            Plotly.react('chart', [{
                 type: 'indicator',
                 mode: 'gauge+number',
-                value: temperature, // Use a single value, not an array
+                value: temperature,
                 title: { text: 'Temperature (°C)' },
                 gauge: {
-                    axis: { range: [null, 100] }, // Adjust range as needed
-                    bar: { color: 'red' },
+                    axis: { range: [0, 100] }, // Full gauge range
+                    bar: { color: barColor },
                     steps: [
-                        { range: [0, 30], color: '#d4f4fa' },
-                        { range: [30, 60], color: '#f4e842' },
-                        { range: [60, 100], color: '#f45b69' }
-                    ]
-                }
+                        { range: [0, 100], color: '#e0e0e0' } // Grey background for entire gauge
+                    ],
+                    // Full circle style
+                    shape: "angular",
+                    startangle: 0,
+                    endangle: 360
+                },
+                domain: { x: [0, 1], y: [0, 1] }
             }], {
-                title: 'Current Temperature'
+                title: 'Current Temperature',
+                margin: { t: 50, b: 0, l: 0, r: 0 }
             });
         }
 
