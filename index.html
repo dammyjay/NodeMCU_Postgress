@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Live Updates with Graph</title>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
     <style>
         table {
             width: 100%;
@@ -27,6 +31,11 @@
 </head>
 <body>
     <h1>Live Data Table & Temperature Graph</h1>
+    <div style="margin-top: 20px;">
+        <button onclick="exportToExcel()">Export to Excel</button>
+        <button onclick="exportToPDF()">Export to PDF</button>
+    </div>
+
 
     <div id="chart"></div>
 
@@ -46,6 +55,7 @@
     </table>
 
     <script>
+        
         function updateTable(data) {
             const tableBody = document.getElementById("dataTable");
             tableBody.innerHTML = "";
@@ -167,6 +177,27 @@
             console.error("WebSocket Error:", error);
             setInterval(fetchData, 5000); // Poll every 5 seconds if WebSocket fails
         };
+
+        function exportToExcel() {
+            const table = document.getElementById('dataTable');
+            const wb = XLSX.utils.table_to_book(table, { sheet: "Data" });
+            XLSX.writeFile(wb, 'TemperatureData.xlsx');
+        }
+
+        function exportToPDF() {
+            const table = document.querySelector("table");
+            html2canvas(table).then(canvas => {
+                const imgData = canvas.toDataURL('image/png');
+                const pdf = new jspdf.jsPDF();
+                const imgProps = pdf.getImageProperties(imgData);
+                const pdfWidth = pdf.internal.pageSize.getWidth();
+                const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+        
+                pdf.addImage(imgData, 'PNG', 0, 10, pdfWidth, pdfHeight);
+                pdf.save('TemperatureData.pdf');
+            });
+        }
+
     </script>
 </body>
 </html>
