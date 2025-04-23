@@ -10,6 +10,35 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
     <style>
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            margin-right: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-dark-green {
+            background-color: #006400;
+            color: white;
+        }
+        
+        .btn-dark-green:hover {
+            background-color: #004d00;
+        }
+        
+        .btn-light-green {
+            background-color: #90ee90;
+            color: #004d00;
+            border: 2px solid #004d00;
+        }
+        
+        .btn-light-green:hover {
+            background-color: #7dd87d;
+        }
+
         table {
             width: 100%;
             border-collapse: collapse;
@@ -30,10 +59,10 @@
     </style>
 </head>
 <body>
-    <h1>Live Data Table & Temperature Graph</h1>
+    <h1>Live Data Table & Sensor Graph</h1>
     <div style="margin-top: 20px;">
-        <button onclick="exportToExcel()">Export to Excel</button>
-        <button onclick="exportToPDF()">Export to PDF</button>
+        <button class="btn btn-dark-green" onclick="exportToExcel()">Export to Excel</button>
+        <button class="btn btn-light-green" onclick="exportToPDF()">Export to PDF</button>
     </div>
 
 
@@ -43,14 +72,14 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Temperature (°C)</th>
-                <th>Humidity</th>
+                <th>Sensor (°C)</th>
+<!--                 <th>Humidity</th> -->
                 <th>Date</th>
                 <th>Time</th>
             </tr>
         </thead>
         <tbody id="dataTable">
-            <tr><td colspan="5">Loading data...</td></tr>
+            <tr><td colspan="4">Loading data...</td></tr>
         </tbody>
     </table>
 
@@ -61,7 +90,7 @@
             tableBody.innerHTML = "";
 
             if (data.length === 0) {
-                tableBody.innerHTML = "<tr><td colspan='5'>No data available</td></tr>";
+                tableBody.innerHTML = "<tr><td colspan='4'>No data available</td></tr>";
                 return;
             }
 
@@ -70,7 +99,6 @@
                 tr.innerHTML = `
                     <td>${row.id}</td>
                     <td>${row.temperature}</td>
-                    <td>${row.humidity}</td>
                     <td>${row.date}</td>
                     <td>${row.time}</td>
                 `;
