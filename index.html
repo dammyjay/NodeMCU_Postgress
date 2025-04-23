@@ -74,17 +74,36 @@
             let timeArray = latestData.map(row => `${row.date} ${row.time}`);
             let temperatureArray = latestData.map(row => row.temperature);
 
-            Plotly.react('chart', [{
-                x: timeArray,
-                y: temperatureArray,
-                type: 'scatter',
-                mode: 'lines+markers',
-                name: 'Temperature (°C)',
-                line: { color: 'red' }
+            // Plotly.react('chart', [{
+            //     x: timeArray,
+            //     y: temperatureArray,
+            //     type: 'scatter',
+            //     mode: 'lines+markers',
+            //     name: 'Temperature (°C)',
+            //     line: { color: 'red' }
+            // }], {
+            //     title: 'Real-time Temperature Graph',
+            //     xaxis: { title: 'Time' },
+            //     yaxis: { title: 'Temperature (°C)' }
+            // });
+
+
+             Plotly.react('chart', [{
+                type: 'indicator',
+                mode: 'gauge+number',
+                value: temperature, // Use a single value, not an array
+                title: { text: 'Temperature (°C)' },
+                gauge: {
+                    axis: { range: [null, 100] }, // Adjust range as needed
+                    bar: { color: 'red' },
+                    steps: [
+                        { range: [0, 30], color: '#d4f4fa' },
+                        { range: [30, 60], color: '#f4e842' },
+                        { range: [60, 100], color: '#f45b69' }
+                    ]
+                }
             }], {
-                title: 'Real-time Temperature Graph',
-                xaxis: { title: 'Time' },
-                yaxis: { title: 'Temperature (°C)' }
+                title: 'Current Temperature'
             });
         }
 
