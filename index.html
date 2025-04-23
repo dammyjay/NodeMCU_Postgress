@@ -74,6 +74,8 @@
             let timeArray = latestData.map(row => `${row.date} ${row.time}`);
             let temperatureArray = latestData.map(row => row.temperature);
 
+            const temperature = temperatureArray[temperatureArray.length - 1];
+
             // Plotly.react('chart', [{
             //     x: timeArray,
             //     y: temperatureArray,
