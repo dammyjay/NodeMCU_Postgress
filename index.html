@@ -78,6 +78,15 @@
 
     <div id="chart"></div>
 
+    <div style="margin-top: 20px;">
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate">
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate">
+        <button class="btn btn-light-green" onclick="applyDateFilter()">Filter</button>
+        <button class="btn btn-dark-green" onclick="resetFilter()">Reset</button>
+    </div>
+
     <table>
         <thead>
             <tr>
@@ -234,6 +243,30 @@
                 pdf.addImage(imgData, 'PNG', 0, 10, pdfWidth, pdfHeight);
                 pdf.save('TemperatureData.pdf');
             });
+        }
+
+        function applyDateFilter() {
+            const start = document.getElementById("startDate").value;
+            const end = document.getElementById("endDate").value;
+        
+            if (!start || !end) {
+                alert("Please select both start and end dates.");
+                return;
+            }
+        
+            fetch(`/getDataByDate?start=${start}&end=${end}`)
+                .then(response => response.json())
+                .then(data => {
+                    updateTable(data);
+                    updateGraph(data);
+                })
+                .catch(error => console.error('Error filtering data:', error));
+        }
+        
+        function resetFilter() {
+            document.getElementById("startDate").value = '';
+            document.getElementById("endDate").value = '';
+            fetchData(); // Load all data again
         }
 
     </script>
