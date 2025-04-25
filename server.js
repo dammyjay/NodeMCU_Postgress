@@ -11,9 +11,16 @@ const server = require("http").createServer(app);
 const wss = new WebSocket.Server({ server });
 
 // PostgreSQL Connection
+// const pool = new Pool({
+//     connectionString: connectionString,
+//     ssl: { rejectUnauthorized: false }
+// });
+
 const pool = new Pool({
-    connectionString: connectionString,
-    ssl: { rejectUnauthorized: false }
+  connectionString: process.env.DATABASE_URL || 'postgresql://user123:QiAizBnRp8bzphS2FaPikFmkSRFdmrIE@dpg-d04kqkc9c44c739oc66g-a.oregon-postgres.render.com/mydb_tph6',
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 // Ensure table exists
@@ -90,6 +97,25 @@ app.get("/getAllData", async (req, res) => {
     } catch (error) {
         console.error("Error fetching data:", error);
         res.status(500).json({ error: "Database fetch failed" });
+    }
+});
+
+app.get("/getDataByDate", async (req, res) => {
+    const { start, end } = req.query;
+
+    if (!start || !end) {
+        return res.status(400).json({ error: "Missing start or end date" });
+    }
+
+    try {
+        const result = await pool.query(
+            "SELECT * FROM nodemcu_table WHERE date BETWEEN $1 AND $2 ORDER BY id DESC",
+            [start, end]
+        );
+        res.json(result.rows);
+    } catch (error) {
+        console.error("Error filtering data:", error);
+        res.status(500).json({ error: "Database filter failed" });
     }
 });
 
